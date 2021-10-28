@@ -1,5 +1,3 @@
-
-
 /* PARA LOS METODOS RECUSRSIVOS ES NECESARIO:
     1. PASO BASE
     2. LLAMADA RECURSIVA
@@ -14,56 +12,36 @@ public class Sesion4 {
 
     static Scanner teclado = new Scanner(System.in);
 
-    static boolean esPrimo(int numero){
-
-        int contador = 2;
-        boolean esDivisible;
-        boolean esUnPrimo = (numero != 1) && (numero != 0);
-
-        while ((contador <= numero) && esUnPrimo) {
-            esDivisible = numero % contador == 0;
-            if (numero != contador) {
-                if (esDivisible) esUnPrimo = false;
-            }
-            contador++;
-        }
-        return esUnPrimo;
-    }
-
     //Apartado 1
     static void primosGemelos(int numero1, int numero2){
 
-        int contador = numero1;
+        //int contador = numero1;
         int contadorMenu = 1;
-        int primerPrimo = 0;
+        int primerPrimo = 2;
         int segundoPrimo = 0;
 
-        while (contador < numero2) {
-            for (int i=0; i<2;) {
-                if (esPrimo(contador)) {
-                    if (primerPrimo == 0) primerPrimo = contador;
-                    else segundoPrimo = contador;
-                    if (primerPrimo + 2 == segundoPrimo) {
-                        System.out.printf("%2d. %5d %5d\n", contadorMenu, primerPrimo, segundoPrimo);
-                        primerPrimo = segundoPrimo;
-                        segundoPrimo = 0;
-                        contadorMenu++;
-                    }
-                    i++;
+        for (int i=numero1; i < numero2; i++) {
+            if (Sesion2.esPrimo(i)) {
+                segundoPrimo = i;
+                if (primerPrimo + 2 == segundoPrimo) {
+                    System.out.printf("%2d. %5d %5d\n", contadorMenu, primerPrimo, segundoPrimo);
+                    primerPrimo = segundoPrimo;
+                    segundoPrimo = 0;
+                    contadorMenu++;
                 }
-                contador++;
             }
-            primerPrimo = segundoPrimo;
-            segundoPrimo = 0;
+            if (segundoPrimo != 0) {
+                primerPrimo = segundoPrimo;
+                segundoPrimo = 0;
+            }
         }
     }
 
     //Apartado 2
-    static void mostrarSumasDePrimos(){
-        int num = Sesion3.leerNumero(4, 1000);
+    static void mostrarSumasDePrimos(int num){
         int contadorMenu = 1;
         for (int i=2; i<num; i++){
-            if(esPrimo(i) && esPrimo(num-i)) {
+            if(Sesion2.esPrimo(i) && Sesion2.esPrimo(num-i)) {
                 int num2 = num-i;
                 System.out.printf("%d. %s\n", contadorMenu, i + " + " + num2 + " = " + num);
                 contadorMenu++;
@@ -72,18 +50,18 @@ public class Sesion4 {
     }
 
     //Apartado 3
+    static boolean esPrimoRecursivo(int numero, int contador){
+        if (numero == 1) return false;
+        if (contador>=numero) return true;
+        else if (numero%contador == 0) return false;
+        else return esPrimoRecursivo(numero, contador+1);
+    }
 
-
-
-    public static void main(String []args){
-
-        System.out.println("Introduzca un número comprendido entre 1 y 500");
-        int numero1 = teclado.nextInt();
-        System.out.println("Introduzca otro número comprendido entre 1 y 500");
-        int numero2 = teclado.nextInt();
-        primosGemelos(numero1, numero2);
-
-        System.out.println("Mostrar sumas de primos");
-        mostrarSumasDePrimos();
+    //Apartado 4
+    static double potencia(int numero1, int numero2){
+        double resultado;
+        if (numero2 == 0) return 1;
+        else if (numero2 == 1) return numero1;
+        else return (numero1 * potencia(numero1, (numero2)-1));
     }
 }
